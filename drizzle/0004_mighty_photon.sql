@@ -1,0 +1,1 @@
+ALTER TABLE `registered_centers` ADD `representative` varchar(64);

@@ -1,0 +1,1 @@
+ALTER TABLE `saved_design_combos` ADD `isShared` int DEFAULT 0 NOT NULL;

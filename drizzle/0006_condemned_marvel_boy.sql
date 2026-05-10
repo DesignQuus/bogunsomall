@@ -1,0 +1,1 @@
+ALTER TABLE `signup_requests` ADD `mobilePhone` varchar(32);

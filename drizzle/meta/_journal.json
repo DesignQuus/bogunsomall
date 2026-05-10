@@ -1,0 +1,55 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1776999294834,
+      "tag": "0000_tan_black_bolt",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1777173506605,
+      "tag": "0001_sharp_human_torch",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1777181180144,
+      "tag": "0002_light_thunderbolts",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1777181559028,
+      "tag": "0003_same_starfox",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1777192852407,
+      "tag": "0004_mighty_photon",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1777758924530,
+      "tag": "0005_outstanding_tigra",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1777761689309,
+      "tag": "0006_condemned_marvel_boy",
+      "breakpoints": true
+    }
+  ]
+}
