@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * NamecardSamples.tsx
  * 명함 샘플 갤러리 페이지
@@ -5,7 +7,7 @@
  */
 
 import { useState } from "react";
-import { Link } from "wouter";
+import Link from "next/link";
 import { ChevronRight, ArrowLeft, ExternalLink } from "lucide-react";
 import BackButton from "@/components/BackButton";
 

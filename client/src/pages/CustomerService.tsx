@@ -1,10 +1,12 @@
+"use client";
+
 /**
  * CustomerService.tsx
  * - 고객센터 페이지
  * - FAQ, 문의하기, 운영 안내
  */
 import { useState } from "react";
-import { Link } from "wouter";
+import Link from "next/link";
 import { ChevronRight, ChevronDown, Phone, Mail, Clock, MessageSquare, FileText, Package } from "lucide-react";
 import { toast } from "sonner";
 

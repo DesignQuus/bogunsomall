@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * Register.tsx — 기관 등록 신청 페이지 (5단계 스텝 방식)
  * Step 1: 이용약관 동의
@@ -8,7 +10,8 @@
  */
 
 import { useState } from "react";
-import { Link, useLocation } from "wouter";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useRegistrations } from "@/contexts/RegistrationContext";
 import {
   Building2, User, Phone, Mail, MapPin, FileText,
@@ -79,7 +82,7 @@ const STEPS = [
 ];
 
 export default function Register() {
-  const [, navigate] = useLocation();
+  const router = useRouter();
   const { addRegistration } = useRegistrations();
   const [step, setStep] = useState<StepId>(1);
   const [form, setForm] = useState<FormData>(EMPTY_FORM);
@@ -238,7 +241,7 @@ export default function Register() {
       <div className="bg-white border-b border-black/5 sticky top-0 z-10">
         <div className="max-w-[680px] mx-auto px-5 py-4 flex items-center gap-4">
           <button
-            onClick={() => window.history.length > 1 ? window.history.back() : navigate("/")}
+            onClick={() => window.history.length > 1 ? window.history.back() : router.push("/")}
             className="flex items-center gap-2 text-[13px] text-[#6E6E73] hover:text-[#1D1D1F] transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -248,7 +251,7 @@ export default function Register() {
           <span className="text-[13px] text-[#6E6E73]">기관 등록 신청</span>
           {/* X 닫기 버튼 - 클릭 시 등록 페이지 처음으로 이동(폼 초기화) */}
           <button
-            onClick={() => { setForm(EMPTY_FORM); setStep(1); setErrors({}); navigate("/register"); }}
+            onClick={() => { setForm(EMPTY_FORM); setStep(1); setErrors({}); router.push("/register"); }}
             className="ml-auto w-8 h-8 flex items-center justify-center rounded-full bg-[#F5F5F7] hover:bg-[#E8E8ED] transition-colors"
             title="기관 등록 신청 처음으로"
           >

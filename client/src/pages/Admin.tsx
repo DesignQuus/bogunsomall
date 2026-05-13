@@ -1,3 +1,4 @@
+"use client";
 /**
  * Admin — 보건소플러스 관리자 페이지
  * 탭 구성:
@@ -10,7 +11,7 @@
 import { useState, useEffect, useMemo, useCallback, lazy, Suspense } from "react";
 const AdminNamecardDesigns = lazy(() => import("../admin/pages/AdminNamecardDesigns"));
 import { trpc } from "@/lib/trpc";
-import { useLocation } from "wouter";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
   Building2, Plus, Trash2, Search, Shield, LogOut,
@@ -332,7 +333,7 @@ function DrilldownPicker({ onSelect, onCancel }: DrilldownPickerProps) {
 
 // ── 메인 컴포넌트 ─────────────────────────────────────────────────────────────
 export default function Admin() {
-  const [, setLocation] = useLocation();
+  const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     // 페이지 로드 시 sessionStorage에서 인증 상태 복원
     return sessionStorage.getItem(ADMIN_AUTH_KEY) === "true";
@@ -793,7 +794,7 @@ export default function Admin() {
             </div>
           </div>
 
-          <button onClick={() => setLocation("/")} className="text-[13px] text-[#86868b] text-center underline underline-offset-2">
+          <button onClick={() => router.push("/")} className="text-[13px] text-[#86868b] text-center underline underline-offset-2">
             ← 메인으로 돌아가기
           </button>
         </div>

@@ -76,6 +76,7 @@ export function generateCode(region: string, existingCodes: string[]): string {
 
 // localStorage에서 사용자 추가 부서 오버라이드 로드
 function loadUserDeptOverrides(): UserDeptOverride[] {
+  if (typeof window === "undefined") return [];
   try {
     const stored = localStorage.getItem("bogunso_user_depts_v1");
     if (stored) return JSON.parse(stored);
@@ -121,9 +122,15 @@ export function CenterProvider({ children }: { children: ReactNode }) {
   useEffect(() => { cleanupOldStorage(); }, []);
 
   // 사용자 추가 부서 오버라이드 (localStorage)
-  const [userDeptOverrides, setUserDeptOverrides] = useState<UserDeptOverride[]>(
-    () => loadUserDeptOverrides()
-  );
+  const [userDeptOverrides, setUserDeptOverrides] = useState<UserDeptOverride[]>([]);
+
+  // 초기 로드
+  useEffect(() => {
+    const stored = loadUserDeptOverrides();
+    if (stored.length > 0) {
+      setUserDeptOverrides(stored);
+    }
+  }, []);
 
   // 추가 기관 (관리자가 런타임에 추가한 기관, 세션 내 유지)
   const [extraCenters, setExtraCenters] = useState<Center[]>([]);
@@ -134,7 +141,9 @@ export function CenterProvider({ children }: { children: ReactNode }) {
 
   // 오버라이드 변경 시 localStorage 저장
   useEffect(() => {
-    saveUserDeptOverrides(userDeptOverrides);
+    if (userDeptOverrides.length > 0) {
+      saveUserDeptOverrides(userDeptOverrides);
+    }
   }, [userDeptOverrides]);
 
   const addCenter = (centerData: Omit<Center, "id" | "createdAt" | "usageCount" | "codeStatus">): Center => {

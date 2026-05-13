@@ -11,13 +11,14 @@
  */
 
 import { useState, useCallback, useEffect, useRef } from "react";
-import { useLocation } from "wouter";
+import { useRouter } from "next/navigation";
 import { X, KeyRound, List, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { useCenters, type Center, type Department } from "@/contexts/CenterContext";
 import { saveLoginInfo, getSavedLogins } from "@/lib/quickLoginStorage";
 import { addAccessLog } from "@/lib/centerStorage";
 import { trpc } from "@/lib/trpc";
+import { useSession } from "@/contexts/SessionContext";
 
 import { CodeInputTab } from "./intro";
 import { RegionSelectTab } from "./intro";
@@ -38,7 +39,8 @@ export { loginState } from "./intro";
 // ─── 컴포넌트 ────────────────────────────────────────────────────────────────
 export default function Intro() {
   const { centers, getCenterByCode, findCenterByCode, addDepartment, incrementUsage } = useCenters();
-  const [, setLocation] = useLocation();
+  const router = useRouter();
+  const { setSession } = useSession();
 
   const [step, setStep] = useState<Step>("code");
   const [inputTab, setInputTab] = useState<InputTab>("code");
@@ -86,9 +88,10 @@ export default function Intro() {
         return;
       }
       // 등록된 보건소 + 유효한 발급코드: 로그인 허용
-      loginState.isLoggedIn = true;
+      const verifiedDeptName = codeVerify.dept?.deptName || deptCode;
+      const verifiedManagerName = codeVerify.dept?.managerName || "";
+      
       const foundCenter = centers.find(c => c.code === centerCode);
-      // DB 등록 데이터(result.center)의 주소/전화번호를 정적 데이터보다 우선 적용
       const dbCenter = result.center;
       const centerObj: Center = {
         ...(foundCenter || {
@@ -107,19 +110,19 @@ export default function Intro() {
           createdAt: new Date().toISOString(),
           codeExpiresAt: "",
         }),
-        // DB에 주소/전화번호가 있으면 우선 사용
         ...(dbCenter?.address ? { address: dbCenter.address } : {}),
         ...(dbCenter?.phone ? { contactPhone: dbCenter.phone } : {}),
       };
-      loginState.center = centerObj;
-      // 발급코드 검증 결과에서 부서명·담당자명 추출
-      const verifiedDeptName = codeVerify.dept?.deptName || deptCode;
-      const verifiedManagerName = codeVerify.dept?.managerName || "";
-      loginState.department = { id: deptCode, name: verifiedDeptName, status: "active", createdAt: new Date().toISOString() };
-      loginState.user = { name: verifiedManagerName };
+
+      setSession({
+        isLoggedIn: true,
+        center: centerObj,
+        department: { id: deptCode, name: verifiedDeptName, status: "active", createdAt: new Date().toISOString() },
+        user: { name: verifiedManagerName }
+      });
       addAccessLog({ centerCode, centerName, region, district: "" });
       saveLoginInfo({ centerCode, centerName, region, deptId: deptCode, deptName: verifiedDeptName, userName: verifiedManagerName });
-      setLocation("/dashboard");
+      router.push("/dashboard");
     } catch (e) {
       setCodeLoginError("서버 연결에 실패했습니다. 잠시 후 다시 시도해 주세요.");
     } finally {
@@ -155,7 +158,7 @@ export default function Intro() {
     onSuccess: () => {
       sessionStorage.setItem("admin_auth", "true");
       setShowAdminModal(false);
-      setLocation("/admin");
+      router.push("/admin");
     },
     onError: () => {
       setAdminPwError("비밀번호가 올바르지 않습니다.");
@@ -306,24 +309,13 @@ export default function Intro() {
   const handleEnter = async () => {
     if (!userName.trim()) { toast.error("담당자 이름을 입력해 주세요."); return; }
     if (!selectedCenter || !selectedDept) return;
-    loginState.isLoggedIn = true;
-    // DB 등록 데이터(address, phone)를 정적 데이터보다 우선 적용
-    try {
-      const verifyResult = await utils.centers.verify.fetch({ centerCode: selectedCenter.code });
-      if (verifyResult.center?.address || verifyResult.center?.phone) {
-        loginState.center = {
-          ...selectedCenter,
-          ...(verifyResult.center.address ? { address: verifyResult.center.address } : {}),
-          ...(verifyResult.center.phone ? { contactPhone: verifyResult.center.phone } : {}),
-        };
-      } else {
-        loginState.center = selectedCenter;
-      }
-    } catch {
-      loginState.center = selectedCenter;
-    }
-    loginState.department = selectedDept;
-    loginState.user = { name: userName };
+    const centerObj = selectedCenter;
+    setSession({
+      isLoggedIn: true,
+      center: centerObj,
+      department: selectedDept,
+      user: { name: userName }
+    });
     incrementUsage(selectedCenter.id);
     addRecent({
       code: selectedCenter.code,
@@ -343,7 +335,7 @@ export default function Intro() {
       userName: userName,
     });
     setRecentList(loadRecent());
-    setLocation("/dashboard");
+    router.push("/dashboard");
   };
 
   // ─────────────────────────────────────────────────────────────────────────

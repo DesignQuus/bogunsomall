@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * 통합 주문 페이지
  * - 모든 단계를 하나의 페이지에서 관리
@@ -5,7 +7,7 @@
  */
 
 import { useState } from "react";
-import { useLocation } from "wouter";
+import { useRouter, useParams } from "next/navigation";
 import { getTemplateById, getTemplatesByProduct } from "@/data/templates";
 import { StandardTemplate, PersonalInfoRow } from "@/types/order";
 import { OrderInfo } from "./OrderInfoStep";
@@ -24,9 +26,10 @@ type OrderStep =
   | "confirm"
   | "complete";
 
-export default function OrderPage({ params }: any) {
-  const productType = params?.productType || "namecard";
-  const [, setLocation] = useLocation();
+export default function OrderPage({ params: propsParams }: any) {
+  const router = useRouter();
+  const params = useParams();
+  const productType = (propsParams?.productType || params?.productType || "namecard") as string;
   const [step, setStep] = useState<OrderStep>("template-select");
   const [selectedTemplate, setSelectedTemplate] = useState<StandardTemplate | null>(null);
   const [designOption, setDesignOption] = useState<string>("standard");
@@ -118,7 +121,7 @@ export default function OrderPage({ params }: any) {
             감사합니다!
           </p>
           <button
-            onClick={() => setLocation("/")}
+            onClick={() => router.push("/")}
             className="px-8 py-3 bg-[#00A39B] text-white text-[15px] font-semibold rounded-full hover:bg-[#0055AA] transition-colors"
           >
             홈으로 돌아가기
@@ -136,7 +139,7 @@ export default function OrderPage({ params }: any) {
         <div className="sticky top-0 bg-white border-b border-[#e5e5e7] z-10">
           <div className="max-w-[1200px] mx-auto px-5 md:px-8 py-4 flex items-center justify-between">
             <button
-              onClick={() => setLocation("/")}
+              onClick={() => router.push("/")}
               className="text-[#00A39B] hover:text-[#0055AA] transition-colors text-[14px] font-semibold"
             >
               ← 뒤로

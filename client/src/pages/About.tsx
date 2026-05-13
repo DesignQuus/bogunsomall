@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * About.tsx — 보건소플러스 회사소개 페이지
  * Design: Apple-inspired, navy + sage green palette, Pretendard / Noto Serif KR
@@ -18,7 +20,7 @@
  */
 
 import { useEffect, useRef, useState } from "react";
-import { Link } from "wouter";
+import Link from "next/link";
 
 // ── 카운터 훅 ──────────────────────────────────────────────────────────────
 function useCountUp(target: number, duration = 2000, start = false) {

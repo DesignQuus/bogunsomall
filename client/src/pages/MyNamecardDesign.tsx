@@ -1,3 +1,5 @@
+"use client";
+
 /*
  * 기존 명함 디자인 확인 & 업로드 페이지
  * - 담당자명 / 부서명 / 보건소명 이름 검색으로 기존 디자인 조회
@@ -10,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Link } from "wouter";
+import Link from "next/link";
 import {
   Upload,
   CheckCircle,

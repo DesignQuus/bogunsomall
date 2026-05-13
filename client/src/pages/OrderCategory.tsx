@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * OrderCategory — 상품 카테고리 선택 페이지 (/order)
  * UX 개선:
@@ -10,7 +12,7 @@
  */
 
 import { useState, useMemo } from "react";
-import { useLocation } from "wouter";
+import { useRouter } from "next/navigation";
 import { ArrowLeft, ChevronRight, Search, Clock, Sparkles, X } from "lucide-react";
 import BackButton from "@/components/BackButton";
 import { categories } from "@/data/categories";
@@ -103,7 +105,7 @@ const THIS_MONTH_EVENTS = [
 ];
 
 export default function OrderCategory() {
-  const [, setLocation] = useLocation();
+  const router = useRouter();
   const { orderHistory } = useTemplate();
   const [activeTab, setActiveTab] = useState<typeof TABS[number]>("전체");
   const [searchQuery, setSearchQuery] = useState("");
@@ -142,9 +144,9 @@ export default function OrderCategory() {
   // 세부카테고리 1개면 직행
   function handleCategoryClick(cat: (typeof categories)[0]) {
     if (cat.sub.length === 1) {
-      setLocation(`/category/${cat.sub[0].id}`);
+      router.push(`/category/${cat.sub[0].id}`);
     } else {
-      setLocation(`/category/${cat.id}`);
+      router.push(`/category/${cat.id}`);
     }
   }
 
@@ -198,7 +200,7 @@ export default function OrderCategory() {
               {THIS_MONTH_EVENTS.map((ev) => (
                 <button
                   key={ev.title}
-                  onClick={() => setLocation(`/category/${ev.categoryId}`)}
+                  onClick={() => router.push(`/category/${ev.categoryId}`)}
                   className="w-full flex items-center gap-3 bg-white rounded-xl px-3 py-2.5 text-left hover:bg-[#f5f5f7] transition-colors border border-[#e5e5ea]"
                 >
                   <div className="w-8 h-8 rounded-lg bg-[#EBF4FF] flex items-center justify-center text-[16px] shrink-0">
@@ -228,7 +230,7 @@ export default function OrderCategory() {
                 return (
                   <button
                     key={order.id}
-                    onClick={() => setLocation(`/category/${order.categoryId}`)}
+                    onClick={() => router.push(`/category/${order.categoryId}`)}
                     className="flex-shrink-0 bg-white border border-[#e5e5ea] rounded-2xl px-4 py-3 flex items-center gap-3 hover:bg-[#f5f5f7] active:scale-[0.97] transition-all min-w-[180px]"
                   >
                     <div className="w-9 h-9 rounded-xl bg-[#f5f5f7] flex items-center justify-center text-[18px] shrink-0">
@@ -329,7 +331,7 @@ export default function OrderCategory() {
 
         {/* 맞춤 주문 배너 */}
         <button
-          onClick={() => setLocation("/custom-order")}
+          onClick={() => router.push("/custom-order")}
           className="w-full bg-[#1d1d1f] text-white rounded-2xl p-5 flex items-center gap-4 text-left hover:bg-[#2d2d2f] active:scale-[0.99] transition-all"
         >
           <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center text-[24px] shrink-0">

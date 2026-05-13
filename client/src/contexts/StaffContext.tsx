@@ -182,14 +182,16 @@ const SAMPLE_STAFF: Staff[] = [
 ];
 
 export function StaffProvider({ children }: { children: ReactNode }) {
-  const [staffList, setStaffList] = useState<Staff[]>(() => {
+  const [staffList, setStaffList] = useState<Staff[]>(SAMPLE_STAFF);
+
+  useEffect(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      return stored ? JSON.parse(stored) : SAMPLE_STAFF;
-    } catch {
-      return SAMPLE_STAFF;
-    }
-  });
+      if (stored) {
+        setStaffList(JSON.parse(stored));
+      }
+    } catch { /* ignore */ }
+  }, []);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(staffList));

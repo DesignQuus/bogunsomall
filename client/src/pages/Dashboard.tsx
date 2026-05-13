@@ -5,7 +5,8 @@
  */
 
 import { useState, useRef, useEffect } from "react";
-import { useLocation, Link } from "wouter";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   Package, RefreshCw, Calendar, BarChart3, Bell, LogOut,
   ChevronRight, Clock, CheckCircle2, Truck, FileText,
@@ -21,6 +22,7 @@ import BannerSlider, { BannerSlide } from "@/components/BannerSlider";
 import { useTemplate } from "@/contexts/TemplateContext";
 import { saveLoginInfo } from "@/lib/quickLoginStorage";
 import { trpc } from "@/lib/trpc";
+import { useSession } from "@/contexts/SessionContext";
 
 /// 슬라이더 데이터 (5개)
 const ALL_SLIDES: BannerSlide[] = [
@@ -264,12 +266,11 @@ const statusColorMap: Record<string, string> = {
 };
 
 export default function Dashboard() {
-  const [, setLocation] = useLocation();
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<"overview" | "orders" | "calendar">("overview");
   const [viewMode, setViewMode] = useState<"list" | "grid" | "table">("list");
 
-  const center = loginState.center;
-  const user = loginState.user;
+  const { isLoggedIn, center, user, department, logout, setSession } = useSession();
   const { orderHistory } = useTemplate();
   const [profileOpen, setProfileOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
@@ -316,21 +317,19 @@ export default function Dashboard() {
 
   // 로그인 안 된 경우 인트로로 리다이렉트 (useEffect로 처리 — 렌더링 중 setState 방지)
   useEffect(() => {
-    if (!loginState.isLoggedIn || !loginState.center) {
-      setLocation("/");
+    if (!isLoggedIn || !center) {
+      router.push("/");
     }
-  }, [setLocation]);
+  }, [isLoggedIn, center, router]);
 
-  if (!loginState.isLoggedIn || !center) {
+  if (!isLoggedIn || !center) {
     return null;
   }
 
   const handleLogout = () => {
-    loginState.isLoggedIn = false;
-    loginState.center = null;
-    loginState.user = null;
+    logout();
     toast.success("로그아웃 되었습니다.");
-    setLocation("/");
+    router.push("/");
   };
 
   const handleDeptChange = async () => {
@@ -346,8 +345,10 @@ export default function Dashboard() {
         setDeptChangeError("등록되지 않은 번호입니다. 발급받은 4자리를 다시 확인해 주세요.");
         return;
       }
-      loginState.department = { id: code, name: result.dept.deptName, status: "active", createdAt: new Date().toISOString() };
-      loginState.user = { name: result.dept.managerName || user?.name || "" };
+      setSession({
+        department: { id: code, name: result.dept.deptName, status: "active", createdAt: new Date().toISOString() },
+        user: { name: result.dept.managerName || user?.name || "" }
+      });
       saveLoginInfo({ centerCode: center.code, centerName: center.name, region: center.region || "", deptId: code, deptName: result.dept.deptName, userName: result.dept.managerName || "" });
       setDeptChangeSuccess(true);
       toast.success(`부서가 "${result.dept.deptName}"으로 변경되었습니다.`);
@@ -443,7 +444,7 @@ export default function Dashboard() {
                   <div className="px-4 py-3 border-b border-black/5">
                     <p className="text-[13px] font-semibold text-[#1d1d1f]">{user?.name || "담당자"}</p>
                     <p className="text-[11px] text-[#86868b] mt-0.5">{center.name}</p>
-                    <p className="text-[11px] text-[#86868b]">{loginState.department?.name || "건강증진팀"}</p>
+                    <p className="text-[11px] text-[#86868b]">{department?.name || "건강증진팀"}</p>
                   </div>
                   <button
                     onClick={() => { setProfileOpen(false); setDeptChangeOpen(true); }}
@@ -491,7 +492,7 @@ export default function Dashboard() {
                           <span className="text-white text-[9px] font-bold">{user?.name?.[0] || "담"}</span>
                         </div>
                         <div>
-                          <p className="text-[13px] font-medium text-[#1d1d1f]">{loginState.department?.name || "건강증진팀"}</p>
+                          <p className="text-[13px] font-medium text-[#1d1d1f]">{department?.name || "건강증진팀"}</p>
                           <p className="text-[11px] text-[#86868b]">{user?.name || "담당자"}</p>
                         </div>
                       </div>
@@ -574,7 +575,7 @@ export default function Dashboard() {
               <svg className="w-3.5 h-3.5 text-[#86868b]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
               {center.name}
               <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-[#00A39B]/10 text-[#00A39B]">
-                {loginState.department?.name || "건강증진팀"}
+                {department?.name || "건강증진팀"}
               </span>
             </p>
           </div>
@@ -620,7 +621,7 @@ export default function Dashboard() {
                     largeformat: "/category/largeformat",
                     digital: "/category/digital",
                   };
-                  if (routeMap[category.id]) setLocation(routeMap[category.id]);
+                  if (routeMap[category.id]) router.push(routeMap[category.id]);
                   else toast.info(`${category.name} 카테고리 준비 중입니다.`);
                 }}
                 className="group overflow-hidden rounded-[12px] bg-white border border-black/5 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col p-0"
@@ -676,7 +677,7 @@ export default function Dashboard() {
             ].map((card) => (
               <button
                 key={card.id}
-                onClick={() => setLocation(card.route)}
+                onClick={() => router.push(card.route)}
                 className="group overflow-hidden rounded-[16px] bg-white border border-black/5 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col p-0 text-left"
               >
                 {/* 이미지 영역 — 7:4 비율 */}
@@ -869,7 +870,7 @@ export default function Dashboard() {
                   ))}
                 </div>
                 <button
-                  onClick={() => setLocation("/calendar")}
+                  onClick={() => router.push("/calendar")}
                   className="w-full mt-4 px-4 py-2.5 text-[13px] font-semibold text-[#00A39B] hover:bg-[#F0F7FF] rounded-xl transition-colors"
                 >
                   전체 일정 보기 →
@@ -924,7 +925,7 @@ export default function Dashboard() {
                     <Package className="w-8 h-8 text-[#d2d2d7] mx-auto mb-2" />
                     <p className="text-[13px] text-[#86868b]">아직 주문 이력이 없습니다.</p>
                     <button
-                      onClick={() => setLocation("/order/namecard")}
+                      onClick={() => router.push("/order/namecard")}
                       className="mt-3 text-[13px] text-[#00A39B] hover:underline"
                     >
                       첫 주문하기 →
@@ -949,9 +950,9 @@ export default function Dashboard() {
                       <button
                         onClick={() => {
                           if (order.productType === "namecard") {
-                            setLocation(`/order/namecard?orderId=${order.id}`);
+                            router.push(`/order/namecard?orderId=${order.id}`);
                           } else {
-                            setLocation(`/order/reorder/${order.productType}?orderId=${order.id}`);
+                            router.push(`/order/reorder/${order.productType}?orderId=${order.id}`);
                           }
                           toast.success("재주문 폼으로 이동합니다.");
                         }}
@@ -1023,7 +1024,7 @@ export default function Dashboard() {
                   <div className="px-6 py-10 text-center">
                     <Package className="w-10 h-10 text-[#d2d2d7] mx-auto mb-3" />
                     <p className="text-[14px] text-[#86868b] mb-4">주문 이력이 없습니다.</p>
-                    <button onClick={() => setLocation("/order/namecard")} className="text-[13px] text-[#00A39B] hover:underline">첫 주문하기 →</button>
+                    <button onClick={() => router.push("/order/namecard")} className="text-[13px] text-[#00A39B] hover:underline">새 주문하기 →</button>
                   </div>
                 ) : (
                   orderHistory.map((order) => (

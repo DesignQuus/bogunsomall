@@ -1,3 +1,5 @@
+"use client";
+
 /*
  * Design: "Clean Canvas" — Apple Store Style
  * - Product cards with sample images (like bogunsoplus.com)
@@ -7,7 +9,8 @@
 
 import { useEffect, useState, useRef, Fragment } from "react";
 import { motion } from "framer-motion";
-import { Link, useParams, useLocation } from "wouter";
+import Link from "next/link";
+import { useParams, useRouter, usePathname } from "next/navigation";
 import { ArrowRight, ChevronRight, ChevronLeft, RefreshCw, Edit3, X, CheckCircle2, Phone, Building2, User, Briefcase, Search, LayoutGrid, List } from "lucide-react";
 import { categories } from "@/data/categories";
 import type { SubCategory } from "@/data/categories";
@@ -801,8 +804,9 @@ const MICHUHOL_CARDS = [
 ];
 
 export default function CategoryPage() {
-  const params = useParams<{ id: string }>();
-  const [, navigate] = useLocation();
+  const params = useParams();
+  const router = useRouter();
+  const categoryId = params?.id as string;
 
   // 카테고리 ID → 주문 폼 URL 매핑
   const getOrderUrl = (categoryId: string): string => {
@@ -889,13 +893,13 @@ export default function CategoryPage() {
 
   // 명함 카테고리 진입 시 표준명함을 기본으로 설정
   useEffect(() => {
-    if (params.id === "namecard") {
+    if (categoryId === "namecard") {
       // 명함 카테고리 진입 시 자동으로 표준명함으로 리다이렉트
-      navigate("/category/namecard-standard");
+      router.push("/category/namecard-standard");
     }
-  }, [params.id, navigate]);
+  }, [categoryId, router]);
 
-  const result = findCategory(params.id || "");
+  const result = findCategory(categoryId || "");
 
   if (!result) {
     return (
@@ -940,7 +944,7 @@ export default function CategoryPage() {
     { id: "8120", name: "절주 사업" },
   ];
 
-  if (params.id === "biz") {
+  if (categoryId === "biz") {
     const activeSub = activeBizSub ? BIZ_MENUS.find(m => m.id === activeBizSub) : null;
     const activeBanner = activeBizSub ? subCategoryBanners[activeBizSub] : null;
     return (

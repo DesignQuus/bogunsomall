@@ -1,10 +1,13 @@
+"use client";
+
 /**
  * ProductOrderForm.tsx
  * - 스티커, 봉투, 쇼핑백, 캘린더, 디지털소량인쇄, 캠페인 부착물, 금연성공 기념품 주문 폼
  * - URL: /order/product/:productType
  */
 import { useState, useEffect } from "react";
-import { useLocation, Link } from "wouter";
+import Link from "next/link";
+import { useRouter, useParams } from "next/navigation";
 import { ChevronLeft, ChevronRight, CheckCircle2, Package } from "lucide-react";
 import { toast } from "sonner";
 import { useTemplate } from "@/contexts/TemplateContext";
@@ -179,12 +182,14 @@ const PRODUCT_IMAGES: Record<string, string> = {
 };
 
 export default function ProductOrderForm(props: { params?: { productType?: string } }) {
-  const rawProductType = props.params?.productType || "sticker";
+  const router = useRouter();
+  const params = useParams();
+  const rawProductType = (props.params?.productType || params?.productType || "sticker") as string;
   const productType = (VALID_PRODUCT_TYPES.includes(rawProductType as ProductType) ? rawProductType : 'sticker') as ProductType;
   const config = PRODUCT_CONFIG[rawProductType] || PRODUCT_CONFIG.sticker;
-  const [, setLocation] = useLocation();
+  
   const navigate = (path: string | number) => {
-    if (typeof path === 'number') { window.history.go(path); } else { setLocation(path); }
+    if (typeof path === 'number') { window.history.go(path); } else { router.push(path); }
   };
   const { addOrderHistory } = useTemplate();
   const [form, setForm] = useState<FormData>(INITIAL_FORM);
@@ -290,7 +295,7 @@ export default function ProductOrderForm(props: { params?: { productType?: strin
             <ChevronLeft className="w-5 h-5 text-[#1d1d1f]" />
           </button>
         )}
-        <Link href="/category/namecard" className="flex items-center gap-2 hover:opacity-70 transition-opacity">
+        <Link href="/order" className="flex items-center gap-2 hover:opacity-70 transition-opacity">
           <span className="text-xl">{config.icon}</span>
           <div>
             <h1 className="text-[16px] font-semibold text-[#1d1d1f]">{config.name} 주문</h1>

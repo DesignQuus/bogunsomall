@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev . -p 3000",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
@@ -42,6 +42,7 @@
     "@trpc/react-query": "^11.17.0",
     "@trpc/server": "^11.17.0",
     "axios": "^1.16.0",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cookie": "^1.1.1",
     "date-fns": "^4.1.0",
@@ -57,10 +58,11 @@
     "superjson": "^2.2.6",
     "tailwind-merge": "^3.5.0",
     "wouter": "^3.9.0",
+    "xlsx": "^0.18.5",
     "zod": "^4.4.2"
   },
   "devDependencies": {
-    "@egdesk/next-api-plugin": "^1.4.2",
+    "@egdesk/next-api-plugin": "^1.5.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

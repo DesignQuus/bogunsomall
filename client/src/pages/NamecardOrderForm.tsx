@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * NamecardOrderForm.tsx
  * Design: "Clean Canvas" — Apple Store Style
@@ -6,7 +8,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link, useLocation, useSearch } from "wouter";
+import Link from "next/link";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { loginState } from "@/pages/intro/constants";
 import {
   ArrowRight, ChevronRight, ArrowLeft, RefreshCw, Plus, Clock,
@@ -63,7 +66,7 @@ function calcPrice(qty: number, _paper: string, doubleSided: boolean, cornerCut:
 
 // ─── 샘플 전송 컴포넌트 ──────────────────────────────────────────────
 function SampleUploadFlow({ onBack }: { onBack: () => void }) {
-  const [, navigate] = useLocation();
+  const router = useRouter();
   const [sampleStep, setSampleStep] = useState<1 | 2 | 3>(1);
   const [uploadedFiles, setUploadedFiles] = useState<{ name: string; size: number; preview: string | null; type: string }[]>([]);
   const [isMobile, setIsMobile] = useState(false);
@@ -108,7 +111,7 @@ function SampleUploadFlow({ onBack }: { onBack: () => void }) {
 
   const handleSampleSubmit = () => {
     toast.success("샘플 전송이 접수되었습니다. 담당자가 검토 후 연락드립니다.");
-    navigate("/dashboard");
+    router.push("/dashboard");
   };
 
   const formatFileSize = (bytes: number) => {
@@ -612,8 +615,9 @@ function SampleUploadFlow({ onBack }: { onBack: () => void }) {
 }
 
 export default function NamecardOrderForm() {
-  const [, navigate] = useLocation();
-  const searchString = useSearch();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const { orderHistory, addOrderHistory } = useTemplate();
   const [mode, setMode] = useState<OrderMode>("select");
   const [step, setStep] = useState<Step>(1);
@@ -725,8 +729,7 @@ export default function NamecardOrderForm() {
 
   // URL 파라미터로 이전 주문 자동 로드
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const orderId = params.get("orderId");
+    const orderId = searchParams.get("orderId");
     if (orderId) {
       const previousOrder = orderHistory.find((o) => o.id === orderId);
       if (previousOrder && previousOrder.productType === "namecard") {
@@ -925,9 +928,8 @@ export default function NamecardOrderForm() {
     const vat = Math.round(selectPrice * 0.1);
     const totalPrice = selectPrice + vat;
 
-    // URL 파라미터에서 앞면 타입 읽기 (useSearch로 안정적으로 읽기)
-    const urlParams = new URLSearchParams(searchString);
-    const frontTypeFromUrl = urlParams.get("front") || "H형";
+    // URL 파라미터에서 앞면 타입 읽기
+    const frontTypeFromUrl = searchParams.get("front") || "H형";
 
     // 앞면 8종 이미지 (CategoryPage productImages["10"]과 동일한 이미지 사용)
     const FRONT_IMAGES: Record<string, string> = {

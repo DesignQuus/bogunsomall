@@ -2,14 +2,14 @@
 
 import React from "react";
 import { Toaster } from "sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { ThemeProvider } from "@/contexts/ThemeContext";
-import { RegistrationProvider } from "@/contexts/RegistrationContext";
-import { CenterProvider } from "@/contexts/CenterContext";
-import { TemplateProvider } from "@/contexts/TemplateContext";
-import { NotificationProvider } from "@/contexts/NotificationContext";
-import { NavigationProvider } from "@/contexts/NavigationContext";
-import { StaffProvider } from "@/contexts/StaffContext";
+import { TooltipProvider } from "../../client/src/components/ui/tooltip";
+import { ThemeProvider } from "../../client/src/contexts/ThemeContext";
+import { RegistrationProvider } from "../../client/src/contexts/RegistrationContext";
+import { CenterProvider } from "../../client/src/contexts/CenterContext";
+import { TemplateProvider } from "../../client/src/contexts/TemplateContext";
+import { NotificationProvider } from "../../client/src/contexts/NotificationContext";
+import { NavigationProvider } from "../../client/src/contexts/NavigationContext";
+import { StaffProvider } from "../../client/src/contexts/StaffContext";
 
 export function LegacyProviders({ children }: { children: React.ReactNode }) {
   return (

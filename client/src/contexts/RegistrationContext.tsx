@@ -139,6 +139,7 @@ const INITIAL_DATA: RegistrationItem[] = [
 const STORAGE_KEY = "bogunsoplus_registrations";
 
 function loadFromStorage(): RegistrationItem[] | null {
+  if (typeof window === "undefined") return null;
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
@@ -167,9 +168,15 @@ interface RegistrationContextType {
 const RegistrationContext = createContext<RegistrationContextType | null>(null);
 
 export function RegistrationProvider({ children }: { children: ReactNode }) {
-  const [registrations, setRegistrations] = useState<RegistrationItem[]>(() => {
-    return loadFromStorage() ?? INITIAL_DATA;
-  });
+  const [registrations, setRegistrations] = useState<RegistrationItem[]>(INITIAL_DATA);
+
+  // 초기 로드 (client-only)
+  useEffect(() => {
+    const stored = loadFromStorage();
+    if (stored) {
+      setRegistrations(stored);
+    }
+  }, []);
 
   // 상태 변경 시 localStorage에 저장
   useEffect(() => {

@@ -45,6 +45,7 @@ export function saveLoginInfo(info: Omit<SavedLoginInfo, "timestamp">): void {
  * 저장된 모든 로그인 정보 조회
  */
 export function getSavedLogins(): SavedLoginInfo[] {
+  if (typeof window === "undefined") return [];
   try {
     const data = localStorage.getItem(STORAGE_KEY);
     return data ? JSON.parse(data) : [];

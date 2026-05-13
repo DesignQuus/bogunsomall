@@ -1,10 +1,12 @@
+"use client";
+
 /**
  * Portfolio.tsx
  * - 보건소플러스 제작 사례 포트폴리오 페이지
  * - 카테고리별 필터링, 제작 사례 갤러리
  */
 import { useState } from "react";
-import { Link } from "wouter";
+import Link from "next/link";
 import { ArrowRight, ChevronRight } from "lucide-react";
 
 const CATEGORIES = [

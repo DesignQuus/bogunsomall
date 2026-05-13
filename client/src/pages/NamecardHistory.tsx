@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * NamecardHistory.tsx
  * Design: "Clean Canvas" — Apple Store Style
@@ -9,7 +11,8 @@
  */
 
 import { useState, useMemo } from "react";
-import { useLocation, Link } from "wouter";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { trpc } from "@/lib/trpc";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -180,7 +183,7 @@ function ReorderConfirmModal({
 }
 
 export default function NamecardHistory() {
-  const [, setLocation] = useLocation();
+  const router = useRouter();
   const { orderHistory } = useTemplate();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedOrder, setSelectedOrder] = useState<any | null>(null);
@@ -209,7 +212,7 @@ export default function NamecardHistory() {
       params.set("back", combo.backType);
       params.set("sided", "double");
     }
-    setLocation(`/order/namecard?${params.toString()}`);
+    router.push(`/order/namecard?${params.toString()}`);
     toast.success("저장된 디자인 조합으로 주문 페이지를 열었습니다.");
   };
 
@@ -236,7 +239,7 @@ export default function NamecardHistory() {
 
   // 수정요청 발주 — 기존 주문 정보를 폼에 채워서 이동
   const handleEditOrder = (order: any) => {
-    setLocation(`/order/namecard?orderId=${order.id}`);
+    router.push(`/order/namecard?orderId=${order.id}`);
     toast.success("기존 명함 정보를 불러왔습니다. 수정 후 발주하세요.");
   };
 
@@ -279,7 +282,7 @@ export default function NamecardHistory() {
               </p>
             </div>
             <button
-              onClick={() => setLocation("/order/namecard")}
+              onClick={() => router.push("/order/namecard")}
               className="shrink-0 flex items-center gap-2 px-4 py-2.5 bg-[#00A39B] text-white text-[13px] font-semibold rounded-2xl hover:bg-[#0055AA] transition-colors"
             >
               <Package className="w-4 h-4" />

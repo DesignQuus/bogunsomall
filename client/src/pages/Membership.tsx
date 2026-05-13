@@ -1,10 +1,13 @@
+"use client";
+
 /**
  * 멤버십 안내 페이지
  * - 5개 탭: 회원가입 / 아이디·비밀번호 찾기 / 회원약관 / 이용약관 / 개인정보 취급방침
  */
 
-import { useState } from "react";
-import { useLocation, Link } from "wouter";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { CheckCircle, Phone, Mail, ChevronRight, AlertCircle } from "lucide-react";
 
 const TABS = [
@@ -18,11 +21,14 @@ const TABS = [
 type TabId = (typeof TABS)[number]["id"];
 
 export default function Membership() {
-  const [location] = useLocation();
-  const hashTab = location.split("#")[1] as TabId | undefined;
-  const [activeTab, setActiveTab] = useState<TabId>(
-    TABS.find((t) => t.id === hashTab)?.id ?? "join"
-  );
+  const [activeTab, setActiveTab] = useState<TabId>("join");
+
+  useEffect(() => {
+    const hashTab = window.location.hash.replace("#", "") as TabId;
+    if (TABS.find((t) => t.id === hashTab)) {
+      setActiveTab(hashTab);
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#fbfbfd]">

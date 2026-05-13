@@ -1,5 +1,7 @@
+"use client";
+
 import { useState } from "react";
-import { Link } from "wouter";
+import Link from "next/link";
 import Layout from "@/components/Layout";
 import { LayoutList, Table2, BarChart3 } from "lucide-react";
 

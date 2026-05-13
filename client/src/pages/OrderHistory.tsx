@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * OrderHistory.tsx
  * Design: "Clean Canvas" — Apple Store Style
@@ -7,7 +9,8 @@
 
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { Link, useLocation } from "wouter";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   ChevronRight,
   Search,
@@ -49,7 +52,7 @@ const statusColors: Record<string, string> = {
 };
 
 export default function OrderHistory() {
-  const [, navigate] = useLocation();
+  const router = useRouter();
   const { orderHistory } = useTemplate();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
@@ -71,16 +74,16 @@ export default function OrderHistory() {
     const order = orderHistory.find((o) => o.id === orderId);
     if (order) {
       if (order.productType === "namecard") {
-        navigate(`/order/namecard?orderId=${orderId}`, { replace: false });
+        router.push(`/order/namecard?orderId=${orderId}`);
       } else {
-        navigate(`/order/reorder/${order.productType}?orderId=${orderId}`, { replace: false });
+        router.push(`/order/reorder/${order.productType}?orderId=${orderId}`);
       }
       toast.success("재주문 폼으로 이동합니다.");
     }
   };
 
   const handleNewOrder = () => {
-    navigate("/order/namecard", { replace: false });
+    router.push("/order/namecard");
   };
 
   return (

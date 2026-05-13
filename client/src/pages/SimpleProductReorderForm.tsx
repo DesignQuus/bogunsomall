@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * SimpleProductReorderForm.tsx
  * Design: "Clean Canvas" — Apple Store Style
@@ -7,7 +9,8 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Link } from "wouter";
+import Link from "next/link";
+import { useRouter, useSearchParams, useParams } from "next/navigation";
 import { ArrowRight, ChevronRight, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { useTemplate } from "@/contexts/TemplateContext";
@@ -30,7 +33,10 @@ interface SimpleProductReorderFormProps {
 }
 
 export default function SimpleProductReorderForm(props: SimpleProductReorderFormProps) {
-  const productType = props.params?.productType || "flyer";
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const params = useParams();
+  const productType = (props.params?.productType || params?.productType || "flyer") as string;
   const product = productOptions[productType] || productOptions.flyer;
   const { orderHistory } = useTemplate();
   const [reorderOption, setReorderOption] = useState<"same" | "designer">("same");
@@ -42,8 +48,7 @@ export default function SimpleProductReorderForm(props: SimpleProductReorderForm
   });
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const orderId = params.get("orderId");
+    const orderId = searchParams.get("orderId");
     
     if (orderId) {
       const previousOrder = orderHistory.find((o) => o.id === orderId);

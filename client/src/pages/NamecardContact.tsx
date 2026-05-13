@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * NamecardContact.tsx
  * Design: "Clean Canvas" — Apple Store Style
@@ -8,7 +10,7 @@
  */
 
 import { useState, useMemo } from "react";
-import { Link } from "wouter";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Search, X, ChevronRight, Phone, Smartphone } from "lucide-react";
 

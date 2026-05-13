@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 
-const IntroClient = dynamic(() => import("@/client/Intro"), { ssr: false });
+const IntroClient = dynamic(() => import("@/pages/Intro"), { ssr: false });
 
 export default function IntroClientWrapper() {
   return <IntroClient />;

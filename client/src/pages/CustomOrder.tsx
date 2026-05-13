@@ -1,3 +1,5 @@
+"use client";
+
 /*
  * Design: "Clean Canvas" — Apple Store Style
  * - 6개 상품 카테고리 버튼 그리드 (3열 2행)
@@ -7,7 +9,7 @@
 
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { Link } from "wouter";
+import Link from "next/link";
 import {
   ChevronRight,
   Phone,
