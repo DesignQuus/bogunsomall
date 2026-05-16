@@ -492,7 +492,7 @@ export default function CustomOrder() {
                     onDragLeave={() => setIsDragging(false)}
                     onDrop={handleDrop}
                     onClick={() => fileInputRef.current?.click()}
-                    className={`relative border-2 border-dashed rounded-xl px-6 py-8 text-center cursor-pointer transition-all ${
+                    className={`relative border border-dashed rounded-xl px-6 py-8 text-center cursor-pointer transition-all ${
                       isDragging
                         ? "border-[#00A39B] bg-[#EBF4FF]"
                         : "border-[#d2d2d7] hover:border-[#00A39B]/50 hover:bg-white"

@@ -1,3 +1,4 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
 @import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
@@ -39,12 +40,12 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  /* Inter: 숫자·영문 우선 렌더링 / Noto Sans KR: 한글 폴백 */
-  --font-sans: 'Inter', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  --font-mono: 'Inter', 'SF Mono', 'Fira Code', 'Consolas', monospace;
-  --font-numeric: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  /* Pretendard: 한글·영문·숫자 통합 고해상도 폰트 */
+  --font-sans: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono: "Pretendard Variable", "Pretendard", 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  --font-numeric: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   /* font-serif 유틸리티도 sans-serif로 재정의 — 세리프 폰트 사용 금지 */
-  --font-serif: 'Inter', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-serif: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 }
 
 :root {
@@ -133,8 +134,8 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-    /* Inter: 숫자·영문 자동 렌더링 / Noto Sans KR: 한글 폴백 */
+    font-family: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    /* Pretendard: 한글/영문/숫자 균형 최적화 */
     font-feature-settings: "kern" 1, "tnum" 1, "ss01" 1;
     /* tnum: 표형 숫자(tabular numbers) — 숫자 너비 일정하게 */
     -webkit-font-smoothing: antialiased;
@@ -163,28 +164,18 @@
   }
 }
 
-/* ── 숫자(0-9) 전용 Inter 강제 적용 ──
-   * Noto Sans KR의 숫자 글리프 대신 Inter의 산세리프 숫자를 렌더링
-   * unicode-range: 0-9, 콤마, 마침표, 하이픈, 슬래시, 콜론 포함
-   */
-@font-face {
-  font-family: 'NotoSansKR-NumericOverride';
-  src: url('https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2') format('woff2');
-  font-weight: 100 900;
-  font-style: normal;
-  unicode-range: U+0020-007E;
-}
+
 
 @layer utilities {
-  /* 숫자·영문 전용 Inter 적용 유틸리티 */
+  /* 숫자·영문 Pretendard 적용 유틸리티 */
   .font-numeric {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-family: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     font-feature-settings: "tnum" 1;
     font-variant-numeric: tabular-nums;
   }
   /* 코드·기관코드 전용 */
   .font-code {
-    font-family: 'Inter', 'SF Mono', 'Fira Code', monospace;
+    font-family: "Pretendard Variable", "Pretendard", 'SF Mono', 'Fira Code', monospace;
     font-feature-settings: "tnum" 1, "zero" 1;
     letter-spacing: 0.02em;
   }

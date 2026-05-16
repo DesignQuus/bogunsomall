@@ -248,7 +248,7 @@ function SampleUploadFlow({ onBack }: { onBack: () => void }) {
                       {/* 드래그 앤 드롭 영역 */}
                       <div
                         onClick={() => fileInputRef.current?.click()}
-                        className="border-2 border-dashed border-[#d2d2d7] hover:border-[#FF9500] rounded-2xl p-10 text-center cursor-pointer transition-all hover:bg-[#FF9500]/5 group"
+                        className="border border-dashed border-[#d2d2d7] hover:border-[#FF9500] rounded-2xl p-10 text-center cursor-pointer transition-all hover:bg-[#FF9500]/5 group"
                       >
                         <div className="w-14 h-14 rounded-2xl bg-[#f5f5f7] group-hover:bg-[#FF9500]/10 flex items-center justify-center mx-auto mb-4 transition-colors">
                           <Upload className="w-7 h-7 text-[#86868b] group-hover:text-[#FF9500] transition-colors" />
@@ -360,7 +360,7 @@ function SampleUploadFlow({ onBack }: { onBack: () => void }) {
                           <div className="grid grid-cols-3 gap-3 mb-2">
                             {[200, 400, 600].map((q) => (
                               <button key={q} onClick={() => setSampleData((p) => ({ ...p, quantity: q }))}
-                                className={`py-3 rounded-xl text-[14px] font-semibold border-2 transition-all ${
+                                className={`py-3 rounded-xl text-[14px] font-semibold border transition-all ${
                                   sampleData.quantity === q
                                     ? "border-[#FF9500] bg-[#FF9500]/5 text-[#FF9500]"
                                     : "border-[#e8e8ed] text-[#1d1d1f] hover:border-[#FF9500]/50"
@@ -397,7 +397,7 @@ function SampleUploadFlow({ onBack }: { onBack: () => void }) {
                           <div className="grid grid-cols-3 gap-3">
                             {["표준용지", "고급 무광", "유광"].map((p) => (
                               <button key={p} onClick={() => setSampleData((prev) => ({ ...prev, paperType: p }))}
-                                className={`py-3 rounded-xl text-[14px] font-semibold border-2 transition-all ${
+                                className={`py-3 rounded-xl text-[14px] font-semibold border transition-all ${
                                   sampleData.paperType === p
                                     ? "border-[#FF9500] bg-[#FF9500]/5 text-[#FF9500]"
                                     : "border-[#e8e8ed] text-[#1d1d1f] hover:border-[#FF9500]/50"
@@ -409,7 +409,7 @@ function SampleUploadFlow({ onBack }: { onBack: () => void }) {
                         </div>
                         {/* 양면 */}
                         <div>
-                          <label className="flex items-center gap-3 p-4 rounded-xl border-2 border-[#e8e8ed] hover:border-[#FF9500]/30 cursor-pointer transition-all">
+                          <label className="flex items-center gap-3 p-4 rounded-xl border border-[#e8e8ed] hover:border-[#FF9500]/30 cursor-pointer transition-all">
                             <input type="checkbox" checked={sampleData.doubleSided} onChange={(e) => setSampleData((p) => ({ ...p, doubleSided: e.target.checked }))} className="w-4 h-4 accent-[#FF9500]" />
                             <div>
                               <p className="text-[14px] font-medium text-[#1d1d1f]">양면 인쇄</p>
@@ -1035,9 +1035,9 @@ export default function NamecardOrderForm() {
                           }}
                           onMouseEnter={() => setHoveredDesign(label)}
                           onMouseLeave={() => setHoveredDesign(null)}
-                          className={`border-2 overflow-hidden transition-all rounded ${
+                          className={`border overflow-hidden transition-all rounded ${
                             isSelected
-                              ? "border-[#00A39B] shadow-md ring-2 ring-[#00A39B]/20"
+                              ? "border-[#00A39B] shadow-md ring-1 ring-[#00A39B]/20"
                               : hoveredDesign === label
                               ? "border-[#00A39B]/60 shadow-sm"
                               : "border-[#e5e5e7]"
@@ -1050,7 +1050,7 @@ export default function NamecardOrderForm() {
                               alt={label}
                               className="w-full h-full object-cover block transition-transform duration-300"
                               style={{
-                                transform: hoveredDesign === label ? 'scale(1.44)' : 'scale(1.2)',
+                                transform: `${hoveredDesign === label ? 'scale(1.44)' : 'scale(1.2)'} translateY(-5px)`,
                                 transformOrigin: 'center center'
                               }}
                             />
@@ -1474,7 +1474,7 @@ export default function NamecardOrderForm() {
                           ].map(({ label, img }, idx) => (
                             <div key={idx} className="cursor-pointer" onClick={() => { setFormData(f => ({ ...f, templateId: label })); toast.success(`${label} 디자인을 선택했습니다.`); }}>
                               <div className={`overflow-hidden border transition-colors ${
-                                formData.templateId === label ? "border-[#00A39B] outline outline-2 outline-[#00A39B]/20" : "border-[#d2d2d7] hover:border-[#00A39B]"
+                                formData.templateId === label ? "border-[#00A39B] outline outline-1 outline-[#00A39B]/20" : "border-[#d2d2d7] hover:border-[#00A39B]"
                               }`}>
                                 <img src={img} alt={`표준 명함 ${label}`} className="w-full object-cover block" />
                               </div>
@@ -1503,7 +1503,7 @@ export default function NamecardOrderForm() {
                           <div className="space-y-3">
                             {deptSharedOrders.map((order) => (
                               <button key={order.id} onClick={() => { setSelectedPrevOrder(order); toast.success(`${order.name}님의 디자인을 참고합니다.`); }}
-                                className="w-full text-left p-4 rounded-xl border-2 border-[#e8e8ed] hover:border-[#00A39B]/50 bg-[#f5f5f7] hover:bg-[#00A39B]/5 transition-all">
+                                className="w-full text-left p-4 rounded-xl border border-[#e8e8ed] hover:border-[#00A39B]/50 bg-[#f5f5f7] hover:bg-[#00A39B]/5 transition-all">
                                 <div className="flex items-center justify-between">
                                   <div>
                                     <p className="text-[14px] font-semibold text-[#1d1d1f]">{order.name} <span className="text-[#86868b] font-normal">· {order.department}</span></p>
@@ -1733,7 +1733,7 @@ export default function NamecardOrderForm() {
                         <div className="grid grid-cols-3 gap-4 mb-4">
                           {[200, 400, 600].map((qty) => (
                             <button key={qty} onClick={() => setFormData((p) => ({ ...p, quantity: qty }))}
-                              className={`py-4 rounded-xl border-2 text-center transition-all ${formData.quantity === qty ? "border-[#00A39B] bg-[#00A39B]/5" : "border-[#e8e8ed] hover:border-[#00A39B]/50"}`}>
+                              className={`py-4 rounded-xl border text-center transition-all ${formData.quantity === qty ? "border-[#00A39B] bg-[#00A39B]/5" : "border-[#e8e8ed] hover:border-[#00A39B]/50"}`}>
                               <p className="text-[20px] font-bold text-[#1d1d1f]">{qty}</p>
                               <p className="text-[12px] text-[#86868b] mt-0.5">장</p>
                             </button>
@@ -1780,7 +1780,7 @@ export default function NamecardOrderForm() {
                             { value: "유광", label: "유광", desc: "유광 코팅, 선명한 색상 표현" },
                           ].map((paper) => (
                             <button key={paper.value} onClick={() => setFormData((p) => ({ ...p, paperType: paper.value }))}
-                              className={`w-full text-left px-5 py-4 rounded-xl border-2 transition-all ${formData.paperType === paper.value ? "border-[#00A39B] bg-[#00A39B]/5" : "border-[#e8e8ed] hover:border-[#00A39B]/50"}`}>
+                              className={`w-full text-left px-5 py-4 rounded-xl border transition-all ${formData.paperType === paper.value ? "border-[#00A39B] bg-[#00A39B]/5" : "border-[#e8e8ed] hover:border-[#00A39B]/50"}`}>
                               <div className="flex items-center justify-between">
                                 <div>
                                   <p className="text-[15px] font-semibold text-[#1d1d1f]">{paper.label}</p>
@@ -1884,7 +1884,7 @@ export default function NamecardOrderForm() {
                           <p className="text-[13px] font-semibold text-[#86868b] mb-3">앞면</p>
                           <div className={`transition-all duration-300 ${previewZoom ? "scale-150 origin-top-left ml-0" : ""}`}
                             style={{ width: previewZoom ? "calc(100% / 1.5)" : "100%" }}>
-                            <div className="w-full aspect-[9/5] rounded-xl border-2 border-[#e8e8ed] bg-gradient-to-br from-[#00A39B]/5 to-[#00A39B]/15 flex flex-col items-start justify-center p-6 gap-1.5 shadow-sm">
+                            <div className="w-full aspect-[9/5] rounded-xl border border-[#e8e8ed] bg-gradient-to-br from-[#00A39B]/5 to-[#00A39B]/15 flex flex-col items-start justify-center p-6 gap-1.5 shadow-sm">
                               {formData.centerName && <p className="text-[10px] text-[#86868b] font-medium">{formData.centerName}</p>}
                               <p className="text-[20px] font-bold text-[#1d1d1f]">{formData.name || "이름"}</p>
                               <p className="text-[13px] text-[#00A39B] font-semibold">{formData.position || "직급"}</p>
@@ -1904,7 +1904,7 @@ export default function NamecardOrderForm() {
                         {formData.doubleSided && (
                           <div>
                             <p className="text-[13px] font-semibold text-[#86868b] mb-3">뒷면 (양면 인쇄)</p>
-                            <div className="w-full aspect-[9/5] rounded-xl border-2 border-dashed border-[#d2d2d7] bg-[#f5f5f7] flex items-center justify-center">
+                            <div className="w-full aspect-[9/5] rounded-xl border border-dashed border-[#d2d2d7] bg-[#f5f5f7] flex items-center justify-center">
                               <div className="text-center">
                                 <p className="text-[14px] font-semibold text-[#86868b]">뒷면 디자인</p>
                                 <p className="text-[12px] text-[#86868b] mt-1">보건소 주요 사업 안내 또는 QR코드</p>
@@ -2002,14 +2002,14 @@ export default function NamecardOrderForm() {
                         <div className="border-t border-[#e8e8ed] pt-6">
                           <h4 className="text-[15px] font-semibold text-[#1d1d1f] mb-4">결재 알림 방식</h4>
                           <div className="space-y-3">
-                            <label className="flex items-center gap-3 p-4 rounded-xl border-2 border-[#e8e8ed] hover:border-[#00A39B]/30 cursor-pointer transition-all">
+                            <label className="flex items-center gap-3 p-4 rounded-xl border border-[#e8e8ed] hover:border-[#00A39B]/30 cursor-pointer transition-all">
                               <input type="checkbox" name="notifyKakao" checked={formData.notifyKakao} onChange={handleChange} className="w-4 h-4 accent-[#00A39B]" />
                               <div>
                                 <p className="text-[14px] font-semibold text-[#1d1d1f]">카카오톡 알림</p>
                                 <p className="text-[12px] text-[#86868b]">결재 요청·승인·반려 시 카카오톡으로 알림 발송</p>
                               </div>
                             </label>
-                            <label className="flex items-center gap-3 p-4 rounded-xl border-2 border-[#e8e8ed] hover:border-[#00A39B]/30 cursor-pointer transition-all">
+                            <label className="flex items-center gap-3 p-4 rounded-xl border border-[#e8e8ed] hover:border-[#00A39B]/30 cursor-pointer transition-all">
                               <input type="checkbox" name="notifyEmail" checked={formData.notifyEmail} onChange={handleChange} className="w-4 h-4 accent-[#00A39B]" />
                               <div>
                                 <p className="text-[14px] font-semibold text-[#1d1d1f]">이메일 알림</p>
@@ -2214,7 +2214,7 @@ export default function NamecardOrderForm() {
                         <div className="space-y-3">
                           {prevNamecardOrders.map((order) => (
                             <button key={order.id} onClick={() => { setSelectedPrevOrder(order); setReorderData((p) => ({ ...p, quantity: order.quantity, paperType: order.paperType || "표준용지", doubleSided: order.doubleSided || false })); }}
-                              className={`w-full text-left p-4 rounded-xl border-2 transition-all duration-200 ${selectedPrevOrder?.id === order.id ? "border-[#34C759] bg-[#34C759]/5" : "border-[#e8e8ed] hover:border-[#34C759]/50 bg-[#f5f5f7]"}`}>
+                              className={`w-full text-left p-4 rounded-xl border transition-all duration-200 ${selectedPrevOrder?.id === order.id ? "border-[#34C759] bg-[#34C759]/5" : "border-[#e8e8ed] hover:border-[#34C759]/50 bg-[#f5f5f7]"}`}>
                               <div className="flex items-center justify-between">
                                 <div>
                                   <p className="text-[15px] font-semibold text-[#1d1d1f]">{order.name}</p>
@@ -2245,7 +2245,7 @@ export default function NamecardOrderForm() {
                         <div className="space-y-3">
                           {deptSharedOrders.map((order) => (
                             <button key={order.id} onClick={() => { setSelectedPrevOrder(order); setReorderData((p) => ({ ...p, quantity: order.quantity, paperType: order.paperType || "표준용지" })); toast.success(`${order.name}님의 디자인을 참고합니다.`); }}
-                              className={`w-full text-left p-4 rounded-xl border-2 transition-all ${selectedPrevOrder?.id === order.id ? "border-[#00A39B] bg-[#00A39B]/5" : "border-[#e8e8ed] hover:border-[#00A39B]/50 bg-[#f5f5f7]"}`}>
+                              className={`w-full text-left p-4 rounded-xl border transition-all ${selectedPrevOrder?.id === order.id ? "border-[#00A39B] bg-[#00A39B]/5" : "border-[#e8e8ed] hover:border-[#00A39B]/50 bg-[#f5f5f7]"}`}>
                               <div className="flex items-center justify-between">
                                 <div>
                                   <p className="text-[14px] font-semibold text-[#1d1d1f]">{order.name} <span className="text-[#86868b] font-normal">· {order.department}</span></p>
@@ -2302,7 +2302,7 @@ export default function NamecardOrderForm() {
                       <div className="grid grid-cols-3 gap-4 mb-4">
                         {[200, 400, 600].map((qty) => (
                           <button key={qty} onClick={() => setReorderData((p) => ({ ...p, quantity: qty }))}
-                            className={`py-4 rounded-xl border-2 text-center transition-all ${reorderData.quantity === qty ? "border-[#34C759] bg-[#34C759]/5" : "border-[#e8e8ed] hover:border-[#34C759]/50"}`}>
+                            className={`py-4 rounded-xl border text-center transition-all ${reorderData.quantity === qty ? "border-[#34C759] bg-[#34C759]/5" : "border-[#e8e8ed] hover:border-[#34C759]/50"}`}>
                             <p className="text-[20px] font-bold text-[#1d1d1f]">{qty}</p>
                             <p className="text-[12px] text-[#86868b] mt-0.5">장</p>
                           </button>
@@ -2345,7 +2345,7 @@ export default function NamecardOrderForm() {
                       <div className="space-y-3">
                         {["표준용지", "고급 무광", "유광"].map((paper) => (
                           <button key={paper} onClick={() => setReorderData((p) => ({ ...p, paperType: paper }))}
-                            className={`w-full text-left px-5 py-4 rounded-xl border-2 transition-all ${reorderData.paperType === paper ? "border-[#34C759] bg-[#34C759]/5" : "border-[#e8e8ed] hover:border-[#34C759]/50"}`}>
+                            className={`w-full text-left px-5 py-4 rounded-xl border transition-all ${reorderData.paperType === paper ? "border-[#34C759] bg-[#34C759]/5" : "border-[#e8e8ed] hover:border-[#34C759]/50"}`}>
                             <div className="flex items-center justify-between">
                               <span className="text-[15px] font-semibold text-[#1d1d1f]">{paper}</span>
                               {reorderData.paperType === paper && <CheckCircle2 className="w-5 h-5 text-[#34C759]" />}

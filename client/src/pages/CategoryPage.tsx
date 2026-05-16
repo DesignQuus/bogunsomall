@@ -1566,7 +1566,7 @@ export default function CategoryPage() {
                     <div className="space-y-3">
                       <a
                         href={`/order/namecard?front=${encodeURIComponent(selectedCenterCard.design.replace('형','형'))}&reorder=true&name=${encodeURIComponent(selectedCenterCard.name)}&dept=${encodeURIComponent(selectedCenterCard.dept)}&title=${encodeURIComponent(selectedCenterCard.title)}&phone=${encodeURIComponent(selectedCenterCard.phone)}`}
-                        className="flex items-center gap-3 w-full p-4 rounded-xl border-2 border-[#00A39B] bg-[#00A39B]/5 hover:bg-[#00A39B]/10 transition-colors"
+                        className="flex items-center gap-3 w-full p-4 rounded-xl border border-[#00A39B] bg-[#00A39B]/5 hover:bg-[#00A39B]/10 transition-colors"
                       >
                         <div className="w-9 h-9 rounded-full bg-[#00A39B] flex items-center justify-center shrink-0">
                           <RefreshCw className="w-4 h-4 text-white" />
@@ -1578,7 +1578,7 @@ export default function CategoryPage() {
                       </a>
                       <a
                         href={`/order/namecard?front=${encodeURIComponent(selectedCenterCard.design.replace('형','형'))}&template=true&dept=${encodeURIComponent(selectedCenterCard.dept)}`}
-                        className="flex items-center gap-3 w-full p-4 rounded-xl border-2 border-[#5B9BD5] bg-[#5B9BD5]/5 hover:bg-[#5B9BD5]/10 transition-colors"
+                        className="flex items-center gap-3 w-full p-4 rounded-xl border border-[#5B9BD5] bg-[#5B9BD5]/5 hover:bg-[#5B9BD5]/10 transition-colors"
                       >
                         <div className="w-9 h-9 rounded-full bg-[#5B9BD5] flex items-center justify-center shrink-0">
                           <Edit3 className="w-4 h-4 text-white" />

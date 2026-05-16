@@ -162,7 +162,7 @@ export default function NamecardSamples() {
                             e.stopPropagation();
                             setSelectedImageIdx((prev) => ({ ...prev, [sample.id]: i }));
                           }}
-                          className={`w-12 h-10 rounded-lg overflow-hidden border-2 transition-all ${
+                          className={`w-12 h-10 rounded-lg overflow-hidden border transition-all ${
                             imgIdx === i ? "border-[#00A39B]" : "border-transparent hover:border-[#00A39B]/40"
                           }`}
                         >

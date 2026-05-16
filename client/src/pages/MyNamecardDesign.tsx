@@ -429,7 +429,7 @@ export default function MyNamecardDesign() {
               <div>
                 <p className="text-[12px] font-semibold text-[#1d1d1f] mb-2">앞면 이미지</p>
                 <div
-                  className="border-2 border-dashed border-[#e5e5e5] rounded-xl bg-[#f5f5f7] flex flex-col items-center justify-center cursor-pointer hover:border-[#00A39B] hover:bg-[#00A39B]/4 transition-all"
+                  className="border border-dashed border-[#e5e5e5] rounded-xl bg-[#f5f5f7] flex flex-col items-center justify-center cursor-pointer hover:border-[#00A39B] hover:bg-[#00A39B]/4 transition-all"
                   style={{ minHeight: "200px" }}
                   onClick={() => frontRef.current?.click()}
                 >
@@ -464,7 +464,7 @@ export default function MyNamecardDesign() {
               <div>
                 <p className="text-[12px] font-semibold text-[#1d1d1f] mb-2">뒷면 이미지 <span className="text-[#86868b] font-normal">(선택)</span></p>
                 <div
-                  className="border-2 border-dashed border-[#e5e5e5] rounded-xl bg-[#f5f5f7] flex flex-col items-center justify-center cursor-pointer hover:border-[#00A39B] hover:bg-[#00A39B]/4 transition-all"
+                  className="border border-dashed border-[#e5e5e5] rounded-xl bg-[#f5f5f7] flex flex-col items-center justify-center cursor-pointer hover:border-[#00A39B] hover:bg-[#00A39B]/4 transition-all"
                   style={{ minHeight: "200px" }}
                   onClick={() => backRef.current?.click()}
                 >
